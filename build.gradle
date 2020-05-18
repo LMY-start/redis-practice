@@ -17,17 +17,20 @@ configurations {
 repositories {
     mavenCentral()
 }
+def JUNIT5_API_VERSION = '5.3.2'
 
 dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+    implementation ('org.springframework.boot:spring-boot-starter-data-redis') {
+        exclude group: 'io.lettuce', module: 'lettuce-core'
+    }
     implementation 'org.springframework.boot:spring-boot-starter-web'
     compileOnly 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     annotationProcessor 'org.projectlombok:lombok'
-    testImplementation('org.springframework.boot:spring-boot-starter-test') {
-        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
-    }
-    testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.3.2'
+    testImplementation "org.springframework.boot:spring-boot-starter-test"
+    testImplementation "org.junit.jupiter:junit-jupiter-api:${JUNIT5_API_VERSION}"
+    testImplementation "org.junit.jupiter:junit-jupiter-engine:${JUNIT5_API_VERSION}"
+    testImplementation "org.junit.jupiter:junit-jupiter-params:${JUNIT5_API_VERSION}"
     compile group: 'redis.clients', name: 'jedis', version: '3.1.0'
     compile group: 'com.alibaba', name: 'fastjson', version: '1.2.62'
     compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.10.0'
