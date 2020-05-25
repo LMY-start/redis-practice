@@ -12,8 +12,8 @@ public class People  {
     private String gender;
 
 
-//    public static People from(String name) {
-//        return new People(name, "unknown");
-//    }
+    public static People from(String name) {
+        return new People(name, "unknown");
+    }
 
 }
