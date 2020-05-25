@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -19,6 +20,9 @@ public class RedisSerializeTest {
 
     @Autowired
     private RedisTemplate redisTemplate;
+
+    @Autowired
+    private StringRedisTemplate stringRedisTemplate;
 
     @Autowired
     @Qualifier(value = "genericToString")
@@ -35,6 +39,15 @@ public class RedisSerializeTest {
     @Autowired
     @Qualifier(value = "genericFastJsonToJson")
     private RedisTemplate<String, Object> genericFasJsonToJsonTemplate;
+
+    @Test
+    void should_save_string_success_use_string_serializer() {
+        stringRedisTemplate.opsForValue().set("stringSerial", "hello");
+        System.out.println(stringRedisTemplate.getKeySerializer().getClass().getName());
+        System.out.println(stringRedisTemplate.getValueSerializer().getClass().getName());
+        String stringSerial = stringRedisTemplate.opsForValue().get("stringSerial");
+        assertEquals("hello", stringSerial);
+    }
 
     @Test
     void should_save_string_success_use_jdk_serializer() {
